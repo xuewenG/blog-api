@@ -16,4 +16,15 @@ export class HolodayController {
     }
     return ResultUtil.success(nextHoliday)
   }
+  @Get('/rest')
+  rest() {
+    const today = moment()
+    const restHolidayList = holidayList.filter(holiday =>
+      moment(holiday.date).isAfter(today)
+    )
+    if (!restHolidayList) {
+      return ResultUtil.error('next holiday not found')
+    }
+    return ResultUtil.success(restHolidayList)
+  }
 }
