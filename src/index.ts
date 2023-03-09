@@ -23,3 +23,7 @@ useExpressServer(app, {
 })
 
 app.listen(serverConfig.port)
+
+process.on('SIGTERM', () => {
+  process.exit(0)
+})
