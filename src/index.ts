@@ -1,28 +1,30 @@
-import cors, { CorsOptions } from 'cors'
+import 'reflect-metadata'
+import { CorsOptions } from 'cors'
 import express from 'express'
 import { useExpressServer } from 'routing-controllers'
 import { serverConfig } from './config'
-import { HolodayController } from './controller'
+import { HolodayController } from './controller/holidayController'
 import { globalExceptionHandler } from './exception'
 
 const app = express()
 
-// use exception handler
-globalExceptionHandler(app)
-// use cors
-const corsOptions: CorsOptions = {
-  origin: serverConfig.corsOrigin
-}
-app.use(cors(corsOptions))
-// use json
-app.use(express.json())
 // use routing-controllers
+const corsOptions: CorsOptions = {
+  origin: serverConfig.corsOrigin,
+}
 useExpressServer(app, {
+  cors: corsOptions,
+  defaultErrorHandler: false,
   routePrefix: serverConfig.contextPath,
-  controllers: [HolodayController]
+  controllers: [HolodayController],
 })
+// exception handler
+globalExceptionHandler(app)
 
-app.listen(serverConfig.port)
+const port = serverConfig.port
+app.listen(port, () => {
+  console.log(`Server running at: http://127.0.0.1:${port}`)
+})
 
 process.on('SIGTERM', () => {
   process.exit(0)

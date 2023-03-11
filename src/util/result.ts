@@ -8,7 +8,7 @@ export class ResultUtil {
   public static success<T>(data: T) {
     const result: HttpResult<T> = {
       code: 0,
-      data
+      data,
     }
     return result
   }
@@ -16,7 +16,7 @@ export class ResultUtil {
   public static error(message: string) {
     const result: HttpResult<null> = {
       code: -1,
-      message
+      message,
     }
     return result
   }

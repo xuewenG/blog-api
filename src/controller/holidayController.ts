@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { Get, JsonController } from 'routing-controllers'
-import { ResultUtil } from '../../util/result'
-import { holidayList } from './holiday'
+import { holidayList } from './holidayData'
+import { ResultUtil } from '../util/result'
 
 @JsonController('/holiday')
 export class HolodayController {
@@ -9,7 +9,7 @@ export class HolodayController {
   next() {
     const today = moment()
     const nextHoliday = holidayList.find(holiday =>
-      moment(holiday.date).isAfter(today)
+      moment(holiday.date).isAfter(today),
     )
     if (!nextHoliday) {
       return ResultUtil.error('next holiday not found')
@@ -20,7 +20,7 @@ export class HolodayController {
   rest() {
     const today = moment()
     const restHolidayList = holidayList.filter(holiday =>
-      moment(holiday.date).isAfter(today)
+      moment(holiday.date).isAfter(today),
     )
     if (!restHolidayList) {
       return ResultUtil.error('next holiday not found')
