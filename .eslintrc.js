@@ -6,10 +6,10 @@ module.exports = {
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   overrides: [
     {
+      files: ['.eslintrc.{js,cjs}'],
       env: {
         node: true,
       },
-      files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'script',
       },
