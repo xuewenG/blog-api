@@ -3,12 +3,22 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: 'standard-with-typescript',
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  overrides: [
+    {
+      env: {
+        node: true,
+      },
+      files: ['.eslintrc.{js,cjs}'],
+      parserOptions: {
+        sourceType: 'script',
+      },
+    },
+  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  rule: {
-    'comma-dangle': ['always-multiline'],
-  },
+  plugins: ['@typescript-eslint'],
 }
