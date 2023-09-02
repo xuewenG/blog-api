@@ -13,7 +13,7 @@ RUN set -x \
 
 COPY . $MY_HOME
 RUN set -x \
-    && yarn run build
+    && pnpm run build
 
 FROM node:16.19.1-bullseye
 
