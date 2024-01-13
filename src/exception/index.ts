@@ -7,10 +7,13 @@ const globalExceptionHandler = (app: express.Application): void => {
       err: Error,
       _request: express.Request,
       response: express.Response,
-      _next: express.NextFunction,
-    ) => {
+      next: express.NextFunction,
+    ): void => {
       console.error(err)
-      debugger
+      if (response.headersSent) {
+        next(err)
+        return
+      }
       if (err instanceof BaseException) {
         response.json({
           code: err.code,
