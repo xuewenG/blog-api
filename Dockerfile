@@ -1,4 +1,4 @@
-FROM node:16.19.1-bullseye AS BUILDER
+FROM node:20.12.0-alpine3.19 AS BUILDER
 LABEL maintainer="xuewenG" \
         site="https://github.com/xuewenG/blog-api"
 
@@ -15,7 +15,7 @@ COPY . $MY_HOME
 RUN set -x \
     && pnpm run build
 
-FROM node:16.19.1-bullseye
+FROM node:20.12.0-alpine3.19
 
 ENV MY_HOME=/root
 RUN mkdir -p $MY_HOME
@@ -28,4 +28,4 @@ RUN set -x \
 
 COPY --from=BUILDER /root/dist .
 
-ENTRYPOINT ["node", "index.js"]
+ENTRYPOINT ["node", "main.js"]
