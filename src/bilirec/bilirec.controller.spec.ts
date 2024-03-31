@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { ConfigModule } from '@nestjs/config'
 import { BilirecController } from './bilirec.controller'
 import { BilirecService } from './bilirec.service'
 import { RedisModule } from '../redis/redis.module'
@@ -11,7 +12,7 @@ describe('BilirecController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BilirecController],
       providers: [BilirecService],
-      imports: [RedisModule, PushModule],
+      imports: [ConfigModule, RedisModule, PushModule],
     }).compile()
 
     controller = module.get<BilirecController>(BilirecController)
