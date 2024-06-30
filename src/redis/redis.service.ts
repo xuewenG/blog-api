@@ -8,9 +8,14 @@ export class RedisService {
   private client: ReturnType<typeof createClient>
 
   constructor(private configService: ConfigService) {
+    const host = this.configService.get<string>('REDIS_HOST')
+    const port = this.configService.get<string>('REDIS_PORT')
+    const password = this.configService.get<string>('REDIS_PORT')
+    const url = `redis://${host}:${port}`
+
     this.client = createClient({
-      url: this.configService.get<string>('REDIS_URL'),
-      password: this.configService.get<string>('REDIS_PASSWORD'),
+      url,
+      password,
     })
   }
 

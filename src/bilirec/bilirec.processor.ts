@@ -1,5 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common'
-import { Event, EventType } from './bilirec.interface'
+import { Process, Processor } from '@nestjs/bull'
+import { Logger } from '@nestjs/common'
+import { Job } from 'bull'
+import { EventType } from './bilirec.interface'
 import { FangtangService } from '../push/fangtang/fangtang.service'
 import { RedisService } from '../redis/redis.service'
 
@@ -9,42 +11,16 @@ const REDIS_KEY = {
     `BILIREC_STOP_LIVE_TIMER_ID_${roomId}`,
 }
 
-@Injectable()
-export class BilirecService {
-  private consuming = false
-  private eventList: Event[] = []
-
+@Processor('bilirec')
+export class BilirecProcessor {
   constructor(
     private fangtangService: FangtangService,
     private redisService: RedisService,
   ) {}
 
-  public addEvent(event: Event) {
-    const eventType = event.EventType
-    const name = event.EventData.Name
-    Logger.log(`addEvent, roomName=${name}, eventType=${eventType}`)
-
-    this.eventList.push(event)
-  }
-
-  public async next() {
-    if (this.consuming) {
-      return
-    }
-    this.consuming = true
-    try {
-      await this.consume()
-    } catch (err) {
-      Logger.error('consume event failed', err)
-    }
-    this.consuming = false
-    if (this.eventList.length) {
-      this.next()
-    }
-  }
-
-  private async consume() {
-    const event = this.eventList.shift()
+  @Process('event')
+  async handleTranscode(job: Job) {
+    const event = job.data
     if (!event) {
       return
     }
@@ -68,7 +44,7 @@ export class BilirecService {
       }
       await this.redisService.set(
         REDIS_KEY.BILIREC_STOP_LIVE_TIMER_ID(roomId),
-        ``,
+        '',
       )
 
       Logger.log('get live status')

@@ -1,14 +1,15 @@
+import { InjectQueue } from '@nestjs/bull'
 import { All, Body, Controller, Query } from '@nestjs/common'
-import { Event } from './bilirec.interface'
-import { BilirecService } from './bilirec.service'
-import { ResultUtil } from '../util/result'
 import { ConfigService } from '@nestjs/config'
+import { Queue } from 'bull'
+import { Event } from './bilirec.interface'
+import { ResultUtil } from '../util/result'
 
 @Controller('/bilirec')
 export class BilirecController {
   constructor(
     private configService: ConfigService,
-    private bilirecService: BilirecService,
+    @InjectQueue('bilirec') private queue: Queue,
   ) {}
 
   @All('/webhook')
@@ -22,7 +23,6 @@ export class BilirecController {
       return ResultUtil.error('invalid event')
     }
 
-    this.bilirecService.addEvent(event)
-    this.bilirecService.next()
+    this.queue.add('event', event)
   }
 }
