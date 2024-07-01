@@ -10,7 +10,7 @@ export class RedisService {
   constructor(private configService: ConfigService) {
     const host = this.configService.get<string>('REDIS_HOST')
     const port = this.configService.get<string>('REDIS_PORT')
-    const password = this.configService.get<string>('REDIS_PORT')
+    const password = this.configService.get<string>('REDIS_PASSWORD')
     const url = `redis://${host}:${port}`
 
     this.client = createClient({
