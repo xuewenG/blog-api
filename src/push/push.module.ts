@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common'
-import { FangtangService } from './fangtang/fangtang.service'
 import { ConfigModule } from '@nestjs/config'
+import { BarkService } from './bark/bark.service'
+import { FangtangService } from './fangtang/fangtang.service'
 
 @Module({
-  providers: [FangtangService],
+  providers: [BarkService, FangtangService],
   imports: [ConfigModule.forRoot()],
-  exports: [FangtangService],
+  exports: [BarkService, FangtangService],
 })
 export class PushModule {}

@@ -2,7 +2,7 @@ import { Process, Processor } from '@nestjs/bull'
 import { Logger } from '@nestjs/common'
 import { Job } from 'bull'
 import { EventType } from './bilirec.interface'
-import { FangtangService } from '../push/fangtang/fangtang.service'
+import { BarkService } from '../push/bark/bark.service'
 import { RedisService } from '../redis/redis.service'
 
 const REDIS_KEY = {
@@ -14,7 +14,7 @@ const REDIS_KEY = {
 @Processor('bilirec')
 export class BilirecProcessor {
   constructor(
-    private fangtangService: FangtangService,
+    private barkService: BarkService,
     private redisService: RedisService,
   ) {}
 
@@ -58,7 +58,12 @@ export class BilirecProcessor {
 
       Logger.log('send StreamStarted message')
       await this.redisService.set(REDIS_KEY.BILIREC_LIVING(roomId), 'true')
-      await this.fangtangService.send(`${name}开播啦`)
+      await this.barkService.send({
+        group: 'BiliLive',
+        title: '开播啦',
+        body: name,
+        url: `bilibili://live/${roomId}`,
+      })
     } else if (eventType === EventType.StreamEnded) {
       Logger.log(`consume StreamEnded event - ${name}`)
 
@@ -77,7 +82,12 @@ export class BilirecProcessor {
       const timerId = setTimeout(async () => {
         Logger.log('send StreamEnded message')
         await this.redisService.set(REDIS_KEY.BILIREC_LIVING(roomId), 'false')
-        await this.fangtangService.send(`${name}下播啦`)
+        await this.barkService.send({
+          group: 'BiliLive',
+          title: '下播啦',
+          body: name,
+          url: `bilibili://live/${roomId}`,
+        })
       }, 60 * 1000)
       await this.redisService.set(
         REDIS_KEY.BILIREC_STOP_LIVE_TIMER_ID(roomId),
