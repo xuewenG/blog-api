@@ -7,31 +7,27 @@ export class HolidayService {
   private readonly holidayList: Holiday[] = [
     {
       name: '元旦',
-      date: '2024-01-01',
+      date: '2025-01-01',
     },
     {
       name: '春节',
-      date: '2024-02-10',
+      date: '2025-01-28',
     },
     {
       name: '清明节',
-      date: '2024-04-04',
+      date: '2025-04-04',
     },
     {
       name: '劳动节',
-      date: '2024-05-01',
+      date: '2025-05-01',
     },
     {
       name: '端午节',
-      date: '2024-06-08',
+      date: '2025-05-31',
     },
     {
-      name: '中秋节',
-      date: '2024-09-15',
-    },
-    {
-      name: '国庆节',
-      date: '2024-10-01',
+      name: '中秋节、国庆节',
+      date: '2025-10-01',
     },
   ]
 
