@@ -1,31 +1,29 @@
-FROM node:20.12.0-alpine3.19 AS BUILDER
+FROM node:20.18.1-alpine3.19 AS builder
 LABEL maintainer="xuewenG" \
         site="https://github.com/xuewenG/blog-api"
 
-ENV MY_HOME=/root
-RUN mkdir -p $MY_HOME
-WORKDIR $MY_HOME
+ENV APP_HOME=/app
+WORKDIR $APP_HOME
 
-COPY package.json $MY_HOME
+COPY package.json $APP_HOME
 RUN set -x \
     && npm i -g pnpm \
     && pnpm install
 
-COPY . $MY_HOME
+COPY . $APP_HOME
 RUN set -x \
     && pnpm run build
 
-FROM node:20.12.0-alpine3.19
+FROM node:20.18.1-alpine3.19
 
-ENV MY_HOME=/root
-RUN mkdir -p $MY_HOME
-WORKDIR $MY_HOME
+ENV APP_HOME=/app
+WORKDIR $APP_HOME
 
-COPY package.json $MY_HOME
+COPY package.json $APP_HOME
 RUN set -x \
     && npm i -g pnpm \
     && pnpm install --prod
 
-COPY --from=BUILDER /root/dist .
+COPY --from=builder $APP_HOME/dist ./dist
 
 ENTRYPOINT ["node", "main.js"]
