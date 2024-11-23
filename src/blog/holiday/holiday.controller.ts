@@ -17,7 +17,7 @@ export class HolidayController {
 
   @Get('/rest')
   rest() {
-    const holidayList = this.holidayService.next()
+    const holidayList = this.holidayService.rest()
     return ResultUtil.success(holidayList)
   }
 }
