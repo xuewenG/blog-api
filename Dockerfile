@@ -22,8 +22,10 @@ WORKDIR $APP_HOME
 COPY package.json $APP_HOME
 RUN set -x \
     && npm i -g pnpm \
-    && pnpm install --prod
+    && pnpm install --prod \
+    && npm cache clean --force \
+    && pnpm store prune --force
 
-COPY --from=builder $APP_HOME/dist ./dist
+COPY --from=builder $APP_HOME/dist .
 
 ENTRYPOINT ["node", "main.js"]
