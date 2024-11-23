@@ -1,5 +1,6 @@
-import { resolve } from 'path'
+import { join } from 'path'
 import { Injectable, Logger } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { exists } from 'fs-extra'
 import { CdnMap } from './cdn.interface'
 import { DownloadService } from '../download/download.service'
@@ -14,7 +15,15 @@ export class CdnService {
     unpkg: 'unpkg.com',
   }
 
-  constructor(private downloadService: DownloadService) {}
+  private readonly downloadDir: string
+
+  constructor(
+    private configService: ConfigService,
+    private downloadService: DownloadService,
+  ) {
+    this.downloadDir = this.configService.get<string>('DOWNLOAD_DIR') || './'
+    Logger.log(`cdnService init, downloadDir=${this.downloadDir}`)
+  }
 
   public async prepareResouce(resourcePath: string) {
     const [_, cdnName, resourceName] = this.CDN_REG.exec(resourcePath) || []
@@ -31,9 +40,10 @@ export class CdnService {
     Logger.log(`resourceName=${resourceName}`)
 
     const resourceUrl = `https://${cdnHost}${resourceName}`
-    const filePath = resolve(`./${resourcePath}`)
+    const filePath = join(this.downloadDir, `./${resourcePath}`)
 
     if (await exists(filePath)) {
+      Logger.log('resource file exists')
       return filePath
     }
 

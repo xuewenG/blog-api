@@ -24,7 +24,7 @@ export class DownloadService {
   public async save(url: string, filePath: string) {
     await ensureDir(dirname(filePath))
 
-    Logger.log(`start download, url=${url}`)
+    Logger.log(`start download, url=${url}, filePath=${filePath}`)
     const resp = await nodeFetch(url, { agent: this.agent })
     if (!resp.ok || resp.status !== 200 || !resp.body) {
       throw new Error(
