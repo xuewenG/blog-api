@@ -1,6 +1,6 @@
 {
   "name": "App-Dev",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-18-bullseye",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20-bookworm",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "customizations": {
     "vscode": {
