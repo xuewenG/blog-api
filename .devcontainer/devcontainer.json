@@ -1,10 +1,12 @@
 {
-  "name": "App-Dev",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:20-bookworm",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "customizations": {
     "vscode": {
-      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+      "extensions": [
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
+      ]
     }
   },
   "postCreateCommand": "",
