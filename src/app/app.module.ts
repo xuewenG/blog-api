@@ -5,8 +5,6 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { BilirecModule } from '../bilirec/bilirec.module'
 import { BlogModule } from '../blog/blog.module'
-import { CdnModule } from '../cdn/cdn.module'
-import { DownloadModule } from '../download/download.module'
 import { PushModule } from '../push/push.module'
 import { RedisModule } from '../redis/redis.module'
 
@@ -29,8 +27,6 @@ import { RedisModule } from '../redis/redis.module'
         }
       },
     }),
-    CdnModule,
-    DownloadModule,
     PushModule,
     RedisModule,
   ],
